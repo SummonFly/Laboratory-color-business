@@ -1,13 +1,14 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using LaboratoryColor.Application.Interfaces;
+using LaboratoryColor.Infrastructure.Identity;
+using LaboratoryColor.Infrastructure.Persistence;
+using LaboratoryColor.Infrastructure.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using LaboratoryColor.Application.Interfaces;
-using LaboratoryColor.Infrastructure.Identity;
-using LaboratoryColor.Infrastructure.Persistence;
 
 namespace LaboratoryColor.Infrastructure
 {
@@ -53,6 +54,7 @@ namespace LaboratoryColor.Infrastructure
             // Services
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());
+            services.AddScoped<IUserService, UserService>();
 
             return services;
         }

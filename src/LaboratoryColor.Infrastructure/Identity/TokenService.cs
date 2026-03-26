@@ -1,5 +1,5 @@
-﻿using LaboratoryColor.Application.Interfaces;
-using Microsoft.AspNetCore.Identity;
+﻿using LaboratoryColor.Application.DTOs.Auth;
+using LaboratoryColor.Application.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -12,31 +12,24 @@ namespace LaboratoryColor.Infrastructure.Identity
     public class TokenService : ITokenService
     {
         private readonly IConfiguration _configuration;
-        private readonly UserManager<ApplicationUser> _userManager;
 
-        public TokenService(IConfiguration configuration, UserManager<ApplicationUser> userManager)
+        public TokenService(IConfiguration configuration)
         {
             _configuration = configuration;
-            _userManager = userManager;
         }
 
-        public async Task<string> CreateToken(IdentityUser user)
+        public async Task<string> CreateToken(ApplicationUserDto user)
         {
-            var appUser = await _userManager.FindByIdAsync(user.Id);
-            if (appUser == null)
-                throw new Exception("User not found");
-
             var claims = new List<Claim>
         {
             new Claim(JwtRegisteredClaimNames.Sub, user.Id),
             new Claim(JwtRegisteredClaimNames.Email, user.Email ?? ""),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             new Claim(ClaimTypes.NameIdentifier, user.Id),
-            new Claim(ClaimTypes.Name, user.UserName ?? "")
+            new Claim(ClaimTypes.Name, user.UserName)
         };
 
-            var roles = await _userManager.GetRolesAsync(appUser);
-            claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
+            // Роли пока без них, можно добавить позже
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
                 _configuration["JWT:Secret"] ?? throw new Exception("JWT Secret not configured")));

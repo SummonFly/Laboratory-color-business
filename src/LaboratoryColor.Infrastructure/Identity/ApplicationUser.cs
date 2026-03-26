@@ -1,8 +1,9 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using LaboratoryColor.Application.Interfaces;
+using Microsoft.AspNetCore.Identity;
 
 namespace LaboratoryColor.Infrastructure.Identity
 {
-    public class ApplicationUser : IdentityUser
+    public class ApplicationUser : IdentityUser, IApplicationUser
     {
         public string? FirstName { get; set; }
         public string? LastName { get; set; }

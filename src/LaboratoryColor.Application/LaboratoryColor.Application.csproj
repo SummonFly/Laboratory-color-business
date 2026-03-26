@@ -1,0 +1,41 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LaboratoryColor.Domain\LaboratoryColor.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Common\Exceptions\" />
+    <Folder Include="DTOs\Orders\" />
+    <Folder Include="DTOs\Suppliers\" />
+    <Folder Include="DTOs\PurchaseOrders\" />
+    <Folder Include="DTOs\Discounts\" />
+    <Folder Include="Features\Discounts\Queries\" />
+    <Folder Include="Features\Discounts\Commands\" />
+    <Folder Include="Features\Orders\Queries\" />
+    <Folder Include="Features\Orders\Commands\" />
+    <Folder Include="Features\PurchaseOrders\Commands\" />
+    <Folder Include="Features\PurchaseOrders\Queries\" />
+    <Folder Include="Features\Suppliers\Queries\" />
+    <Folder Include="Features\Suppliers\Commands\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="15.1.3" />
+    <PackageReference Include="FluentValidation" Version="12.1.1" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.1" />
+    <PackageReference Include="MediatR" Version="12.5.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.25" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.25" />
+    <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="8.0.25" />
+	<FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+	
+
+</Project>

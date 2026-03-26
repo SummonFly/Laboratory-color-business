@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: laboratory_postgres
+    environment:
+      POSTGRES_DB: LaboratoryColor
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - laboratory_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build:
+      context: .
+      dockerfile: src/LaboratoryColor.API/Dockerfile
+    container_name: laboratory_api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=LaboratoryColor;Username=postgres;Password=postgres
+      - JWT__Secret=${JWT_SECRET:-YourSuperSecretKeyAtLeast32CharactersLong}
+      - JWT__ValidIssuer=http://localhost:5000
+      - JWT__ValidAudience=http://localhost:5000
+    ports:
+      - "5000:80"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - laboratory_network
+
+volumes:
+  postgres_data:
+
+networks:
+  laboratory_network:
+    driver: bridge

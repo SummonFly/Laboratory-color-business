@@ -69,5 +69,16 @@ namespace LaboratoryColor.Domain.Entities
         {
             _orderItems.Add(item);
         }
+
+        public void UpdateStock(int quantityChange)
+        {
+            if (_currentStock + quantityChange < 0)
+                throw new DomainException($"Insufficient stock. Current: {_currentStock}, Attempted to remove: {-quantityChange}");
+
+            _currentStock += quantityChange;
+            UpdatedAt = DateTime.UtcNow;
+
+            AddDomainEvent(new StockChangedEvent(Id, quantityChange, _currentStock));
+        }
     }
 }

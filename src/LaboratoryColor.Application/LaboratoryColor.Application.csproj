@@ -13,7 +13,6 @@
   <ItemGroup>
     <Folder Include="Common\Exceptions\" />
     <Folder Include="DTOs\Orders\" />
-    <Folder Include="DTOs\Suppliers\" />
     <Folder Include="DTOs\PurchaseOrders\" />
     <Folder Include="DTOs\Discounts\" />
     <Folder Include="Features\Discounts\Queries\" />
@@ -22,8 +21,6 @@
     <Folder Include="Features\Orders\Commands\" />
     <Folder Include="Features\PurchaseOrders\Commands\" />
     <Folder Include="Features\PurchaseOrders\Queries\" />
-    <Folder Include="Features\Suppliers\Queries\" />
-    <Folder Include="Features\Suppliers\Commands\" />
   </ItemGroup>
 
   <ItemGroup>

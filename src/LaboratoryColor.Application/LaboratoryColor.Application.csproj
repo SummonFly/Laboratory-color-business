@@ -13,14 +13,8 @@
   <ItemGroup>
     <Folder Include="Common\Exceptions\" />
     <Folder Include="DTOs\Orders\" />
-    <Folder Include="DTOs\PurchaseOrders\" />
-    <Folder Include="DTOs\Discounts\" />
-    <Folder Include="Features\Discounts\Queries\" />
-    <Folder Include="Features\Discounts\Commands\" />
     <Folder Include="Features\Orders\Queries\" />
     <Folder Include="Features\Orders\Commands\" />
-    <Folder Include="Features\PurchaseOrders\Commands\" />
-    <Folder Include="Features\PurchaseOrders\Queries\" />
   </ItemGroup>
 
   <ItemGroup>

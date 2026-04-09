@@ -27,16 +27,29 @@ services:
     container_name: laboratory_api
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=http://+:80
+      - ASPNETCORE_URLS=http://+:8080
       - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=LaboratoryColor;Username=postgres;Password=postgres
       - JWT__Secret=${JWT_SECRET:-YourSuperSecretKeyAtLeast32CharactersLong}
       - JWT__ValidIssuer=http://localhost:5000
       - JWT__ValidAudience=http://localhost:5000
+      - CORS__Origins=http://localhost:3000,http://localhost
     ports:
-      - "5000:80"
+      - "5000:8080"
     depends_on:
       postgres:
         condition: service_healthy
+    networks:
+      - laboratory_network
+
+  frontend:
+    build:
+      context: ./src/LaboratoryColor.Web
+      dockerfile: Dockerfile
+    container_name: laboratory_frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - api
     networks:
       - laboratory_network
 

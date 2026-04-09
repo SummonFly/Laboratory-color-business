@@ -51,12 +51,15 @@ namespace LaboratoryColor.API
                 });
             });
 
-            // Настройка CORS для React
+            // CORS настройка
+            var corsOrigins = builder.Configuration.GetValue<string>("CORS:Origins", "http://localhost:3000,http://localhost")
+                .Split(',', StringSplitOptions.RemoveEmptyEntries);
+
             builder.Services.AddCors(options =>
             {
                 options.AddPolicy("ReactApp", policy =>
                 {
-                    policy.WithOrigins("http://localhost:3000")
+                    policy.WithOrigins(corsOrigins)
                           .AllowAnyHeader()
                           .AllowAnyMethod()
                           .AllowCredentials();

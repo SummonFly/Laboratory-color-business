@@ -38,7 +38,8 @@ export type {
 export type {
     StockMovementType,
     GetStockMovementsParams,
-    CreateStockMovementRequest,
+    GetStockSummaryParams,
+    ProductStockHistory,
 } from './stockMovements';
 
 export type {

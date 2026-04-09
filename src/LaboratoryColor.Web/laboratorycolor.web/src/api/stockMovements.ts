@@ -8,17 +8,25 @@ export interface GetStockMovementsParams {
     movementType?: StockMovementType;
     fromDate?: string;
     toDate?: string;
+    referenceId?: number;
     page?: number;
     pageSize?: number;
 }
 
-export interface CreateStockMovementRequest {
+export interface GetStockSummaryParams {
+    categoryId?: number;
+    searchTerm?: string;
+    lowStockOnly?: boolean;
+    lowStockThreshold?: number;
+}
+
+export interface ProductStockHistory {
     productId: number;
-    quantity: number;
-    movementType: StockMovementType;
-    reason: string;
-    referenceId?: number;
-    referenceNumber?: string;
+    productName: string;
+    currentStock: number;
+    movements: StockMovement[];
+    totalIn: number;
+    totalOut: number;
 }
 
 export const stockMovementsAPI = {
@@ -27,18 +35,15 @@ export const stockMovementsAPI = {
         return response.data;
     },
 
-    getByProduct: async (productId: number): Promise<StockMovement[]> => {
-        const response = await apiClient.get<StockMovement[]>(`/StockMovements/product/${productId}`);
+    getSummary: async (params?: GetStockSummaryParams): Promise<StockMovementSummary[]> => {
+        const response = await apiClient.get<StockMovementSummary[]>('/StockMovements/summary', { params });
         return response.data;
     },
 
-    getSummary: async (): Promise<StockMovementSummary[]> => {
-        const response = await apiClient.get<StockMovementSummary[]>('/StockMovements/summary');
-        return response.data;
-    },
-
-    create: async (data: CreateStockMovementRequest): Promise<StockMovement> => {
-        const response = await apiClient.post<StockMovement>('/StockMovements', data);
+    getProductHistory: async (productId: number, fromDate?: string, toDate?: string): Promise<ProductStockHistory> => {
+        const response = await apiClient.get<ProductStockHistory>(`/StockMovements/product/${productId}`, {
+            params: { fromDate, toDate },
+        });
         return response.data;
     },
 };

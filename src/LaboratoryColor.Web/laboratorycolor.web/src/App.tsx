@@ -7,6 +7,7 @@ import { RegisterPage } from './pages/RegisterPage';
 import { ProductsPage } from './pages/ProductsPage';
 import { CategoriesPage } from './pages/CategoriesPage';
 import { SuppliersPage } from './pages/SuppliersPage';
+import { StockMovementsPage } from './pages/StockMovementsPage';
 
 
 
@@ -17,12 +18,6 @@ const PurchaseOrdersPage = () => (
     </div>
 );
 
-const StockMovementsPage = () => (
-    <div className="bg-white rounded-lg shadow p-6">
-        <h1 className="text-2xl font-bold text-gray-900">Stock Movements</h1>
-        <p className="mt-2 text-gray-600">Stock movements history will appear here</p>
-    </div>
-);
 
 function App() {
     return (

@@ -6,6 +6,7 @@ export { suppliersAPI } from './suppliers';
 export { purchaseOrdersAPI } from './purchaseOrders';
 export { stockMovementsAPI } from './stockMovements';
 export { discountsAPI } from './discounts';
+export type { PurchaseOrder, PurchaseOrderItem } from '../types';
 
 export type {
     LoginRequest,
@@ -31,9 +32,12 @@ export type {
 export type {
     PurchaseOrderStatus,
     CreatePurchaseOrderRequest,
+    CreatePurchaseOrderItemRequest,
     UpdatePurchaseOrderStatusRequest,
     ReceivePurchaseOrderRequest,
+    GetPurchaseOrdersParams,
 } from './purchaseOrders';
+
 
 export type {
     StockMovementType,

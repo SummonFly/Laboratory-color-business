@@ -1,31 +1,46 @@
 import { apiClient } from './client';
-import type { PurchaseOrder, PurchaseOrderItem } from '../types';
+import type { PurchaseOrder } from '../types';
 
 export type PurchaseOrderStatus = 'Pending' | 'Processing' | 'Shipped' | 'Delivered' | 'Cancelled';
+
+export interface GetPurchaseOrdersParams {
+    supplierId?: number;
+    status?: PurchaseOrderStatus;
+    fromDate?: string;
+    toDate?: string;
+}
+
+export interface CreatePurchaseOrderItemRequest {
+    productId: number;
+    quantity: number;
+    unitPrice: number;
+}
 
 export interface CreatePurchaseOrderRequest {
     supplierId: number;
     expectedDeliveryDate?: string;
     notes?: string;
-    items: Omit<PurchaseOrderItem, 'id' | 'productName' | 'receivedQuantity' | 'isFullyReceived'>[];
+    items: CreatePurchaseOrderItemRequest[];
 }
 
 export interface UpdatePurchaseOrderStatusRequest {
-    id: number;
+    purchaseOrderId: number;
     status: PurchaseOrderStatus;
 }
 
+export interface ReceivePurchaseOrderItemRequest {
+    itemId: number;
+    receivedQuantity: number;
+}
+
 export interface ReceivePurchaseOrderRequest {
-    id: number;
-    items: {
-        itemId: number;
-        receivedQuantity: number;
-    }[];
+    purchaseOrderId: number;
+    items: ReceivePurchaseOrderItemRequest[];
 }
 
 export const purchaseOrdersAPI = {
-    getAll: async (): Promise<PurchaseOrder[]> => {
-        const response = await apiClient.get<PurchaseOrder[]>('/PurchaseOrders');
+    getAll: async (params?: GetPurchaseOrdersParams): Promise<PurchaseOrder[]> => {
+        const response = await apiClient.get<PurchaseOrder[]>('/PurchaseOrders', { params });
         return response.data;
     },
 
@@ -40,14 +55,10 @@ export const purchaseOrdersAPI = {
     },
 
     updateStatus: async (data: UpdatePurchaseOrderStatusRequest): Promise<void> => {
-        await apiClient.patch(`/PurchaseOrders/${data.id}/status`, { status: data.status });
+        await apiClient.patch(`/PurchaseOrders/${data.purchaseOrderId}/status`, { status: data.status });
     },
 
     receive: async (data: ReceivePurchaseOrderRequest): Promise<void> => {
-        await apiClient.post(`/PurchaseOrders/${data.id}/receive`, { items: data.items });
-    },
-
-    cancel: async (id: number): Promise<void> => {
-        await apiClient.post(`/PurchaseOrders/${id}/cancel`);
+        await apiClient.post(`/PurchaseOrders/${data.purchaseOrderId}/receive`, { items: data.items });
     },
 };

@@ -8,15 +8,8 @@ import { ProductsPage } from './pages/ProductsPage';
 import { CategoriesPage } from './pages/CategoriesPage';
 import { SuppliersPage } from './pages/SuppliersPage';
 import { StockMovementsPage } from './pages/StockMovementsPage';
+import { PurchaseOrdersPage } from './pages/PurchaseOrdersPage';
 
-
-
-const PurchaseOrdersPage = () => (
-    <div className="bg-white rounded-lg shadow p-6">
-        <h1 className="text-2xl font-bold text-gray-900">Purchase Orders</h1>
-        <p className="mt-2 text-gray-600">Purchase orders list will appear here</p>
-    </div>
-);
 
 
 function App() {

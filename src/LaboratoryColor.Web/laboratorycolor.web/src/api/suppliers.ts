@@ -24,9 +24,14 @@ export interface UpdateSupplierRequest {
     isActive?: boolean;
 }
 
+export interface GetSuppliersParams {
+    isActive?: boolean;
+    search?: string;
+}
+
 export const suppliersAPI = {
-    getAll: async (): Promise<Supplier[]> => {
-        const response = await apiClient.get<Supplier[]>('/Suppliers');
+    getAll: async (params?: GetSuppliersParams): Promise<Supplier[]> => {
+        const response = await apiClient.get<Supplier[]>('/Suppliers', { params });
         return response.data;
     },
 

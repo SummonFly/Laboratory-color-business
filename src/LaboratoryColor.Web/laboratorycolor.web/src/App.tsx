@@ -5,14 +5,10 @@ import { Layout } from './components/common/Layout';
 import { LoginPage } from './pages/LoginPage';
 import { RegisterPage } from './pages/RegisterPage';
 import { ProductsPage } from './pages/ProductsPage';
+import { CategoriesPage } from './pages/CategoriesPage';
 
 
-const CategoriesPage = () => (
-    <div className="bg-white rounded-lg shadow p-6">
-        <h1 className="text-2xl font-bold text-gray-900">Categories</h1>
-        <p className="mt-2 text-gray-600">Categories list will appear here</p>
-    </div>
-);
+
 
 const SuppliersPage = () => (
     <div className="bg-white rounded-lg shadow p-6">

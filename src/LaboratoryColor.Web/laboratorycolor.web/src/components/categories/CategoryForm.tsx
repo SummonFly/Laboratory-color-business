@@ -1,17 +1,16 @@
 import { useState, useEffect, type FormEvent } from 'react';
-import type { Product } from '../../types';
-import type { CreateProductRequest, UpdateProductRequest } from '../../api';
-import { useCategories } from '../../hooks/useCategories';
+import type { Category } from '../../types';
+import type { CreateCategoryRequest, UpdateCategoryRequest } from '../../api';
 
-interface ProductFormProps {
+interface CategoryFormProps {
     isOpen: boolean;
     onClose: () => void;
-    onSubmit: (data: CreateProductRequest | UpdateProductRequest) => void;
-    initialData?: Product;
+    onSubmit: (data: CreateCategoryRequest | UpdateCategoryRequest) => void;
+    initialData?: Category;
     isEditing?: boolean;
 }
 
-export const ProductForm: React.FC<ProductFormProps> = ({
+export const CategoryForm: React.FC<CategoryFormProps> = ({
     isOpen,
     onClose,
     onSubmit,
@@ -19,23 +18,18 @@ export const ProductForm: React.FC<ProductFormProps> = ({
     isEditing = false,
 }) => {
     const [name, setName] = useState('');
-    const [price, setPrice] = useState('');
-    const [categoryId, setCategoryId] = useState('');
     const [description, setDescription] = useState('');
-
-    const { data: categories, isLoading: categoriesLoading } = useCategories();
+    const [imageUrl, setImageUrl] = useState('');
 
     useEffect(() => {
         if (initialData) {
             setName(initialData.name);
-            setPrice(initialData.price.toString());
-            setCategoryId(initialData.categoryId.toString());
             setDescription(initialData.description || '');
+            setImageUrl(initialData.imageUrl || '');
         } else {
             setName('');
-            setPrice('');
-            setCategoryId('');
             setDescription('');
+            setImageUrl('');
         }
     }, [initialData, isOpen]);
 
@@ -44,26 +38,18 @@ export const ProductForm: React.FC<ProductFormProps> = ({
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        const priceNum = parseFloat(price);
-        if (isNaN(priceNum) || priceNum <= 0) return;
-
-        const categoryIdNum = parseInt(categoryId);
-        if (isNaN(categoryIdNum)) return;
-
         if (isEditing && initialData) {
             onSubmit({
                 id: initialData.id,
                 name,
-                price: priceNum,
-                categoryId: categoryIdNum,
                 description: description || undefined,
+                imageUrl: imageUrl || undefined,
             });
         } else {
             onSubmit({
                 name,
-                price: priceNum,
-                categoryId: categoryIdNum,
                 description: description || undefined,
+                imageUrl: imageUrl || undefined,
             });
         }
 
@@ -79,7 +65,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
                     <form onSubmit={handleSubmit}>
                         <div className="px-6 py-4 border-b border-gray-200">
                             <h3 className="text-lg font-medium text-gray-900">
-                                {isEditing ? 'Edit Product' : 'Add Product'}
+                                {isEditing ? 'Edit Category' : 'Add Category'}
                             </h3>
                         </div>
 
@@ -96,41 +82,22 @@ export const ProductForm: React.FC<ProductFormProps> = ({
                             </div>
 
                             <div>
-                                <label className="block text-sm font-medium text-gray-700">Price *</label>
-                                <input
-                                    type="number"
-                                    step="0.01"
-                                    required
-                                    value={price}
-                                    onChange={(e) => setPrice(e.target.value)}
-                                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500"
-                                />
-                            </div>
-
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700">Category *</label>
-                                <select
-                                    required
-                                    value={categoryId}
-                                    onChange={(e) => setCategoryId(e.target.value)}
-                                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500"
-                                    disabled={categoriesLoading}
-                                >
-                                    <option value="">Select a category</option>
-                                    {categories?.map((cat) => (
-                                        <option key={cat.id} value={cat.id}>
-                                            {cat.name}
-                                        </option>
-                                    ))}
-                                </select>
-                            </div>
-
-                            <div>
                                 <label className="block text-sm font-medium text-gray-700">Description</label>
                                 <textarea
                                     value={description}
                                     onChange={(e) => setDescription(e.target.value)}
                                     rows={3}
+                                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+                                />
+                            </div>
+
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700">Image URL</label>
+                                <input
+                                    type="url"
+                                    value={imageUrl}
+                                    onChange={(e) => setImageUrl(e.target.value)}
+                                    placeholder="https://example.com/image.jpg"
                                     className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500"
                                 />
                             </div>

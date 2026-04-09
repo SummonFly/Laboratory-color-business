@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { PlusIcon, EyeIcon, ArchiveBoxArrowDownIcon } from '@heroicons/react/24/outline';
-import { usePurchaseOrders, useUpdatePurchaseOrderStatus, useReceivePurchaseOrder } from '../hooks/usePurchaseOrders';
+import { usePurchaseOrders, useUpdatePurchaseOrderStatus, useReceivePurchaseOrder, useCreatePurchaseOrder } from '../hooks/usePurchaseOrders';
 import { PurchaseOrderForm } from '../components/purchaseOrders/PurchaseOrderForm';
 import { ReceiveOrderModal } from '../components/purchaseOrders/ReceiveOrderModal';
 import type { CreatePurchaseOrderRequest, ReceivePurchaseOrderRequest, PurchaseOrderStatus } from '../api';
@@ -19,6 +19,7 @@ const statusColors: StatusColor = {
 };
 
 const statusOrder: PurchaseOrderStatus[] = ['Pending', 'Processing', 'Shipped', 'Delivered'];
+
 
 export const PurchaseOrdersPage = () => {
     const [isFormOpen, setIsFormOpen] = useState(false);
@@ -39,12 +40,12 @@ export const PurchaseOrdersPage = () => {
 
     const updateStatus = useUpdatePurchaseOrderStatus();
     const receiveOrder = useReceivePurchaseOrder();
+    const createOrder = useCreatePurchaseOrder();
 
     const selectedOrder = orders?.find(o => o.id === selectedOrderId) || null;
 
     const handleCreateOrder = (data: CreatePurchaseOrderRequest) => {
-        // TODO: implement create mutation
-        console.log('Create order:', data);
+        createOrder.mutate(data);
         setIsFormOpen(false);
     };
 

@@ -31,13 +31,13 @@ export const Layout: React.FC = () => {
     return (
         <div className="min-h-screen bg-gray-50">
             {/* Sidebar */}
-            <aside className="fixed inset-y-0 left-0 w-64 bg-white border-r border-gray-200 shadow-sm">
+            <aside className="fixed inset-y-0 left-0 w-64 bg-white border-r border-gray-200 shadow-sm z-10">
                 <div className="flex flex-col h-full">
                     {/* Logo */}
                     <div className="flex items-center h-16 px-6 border-b border-gray-200">
                         <Link to="/" className="flex items-center space-x-2">
                             <CubeIcon className="w-8 h-8 text-primary-600" />
-                            <span className="text-lg font-semibold text-gray-900">
+                            <span className="text-lg font-semibold text-black">
                                 AutoColor
                             </span>
                         </Link>
@@ -51,9 +51,9 @@ export const Layout: React.FC = () => {
                                 <Link
                                     key={item.name}
                                     to={item.href}
-                                    className="flex items-center px-4 py-2 text-gray-700 rounded-lg hover:bg-gray-100 group"
+                                    className="flex items-center px-4 py-2.5 text-gray-700 rounded-lg hover:bg-gray-100 hover:text-gray-900 transition-colors group"
                                 >
-                                    <Icon className="w-5 h-5 mr-3" />
+                                    <Icon className="w-5 h-5 mr-3 text-gray-500 group-hover:text-gray-700" />
                                     <span className="text-sm font-medium">{item.name}</span>
                                 </Link>
                             );
@@ -84,11 +84,11 @@ export const Layout: React.FC = () => {
             </aside>
 
             {/* Main content */}
-            <main className="pl-64">
+            <div className="ml-64">
                 <div className="p-8">
                     <Outlet />
                 </div>
-            </main>
+            </div>
         </div>
     );
 };

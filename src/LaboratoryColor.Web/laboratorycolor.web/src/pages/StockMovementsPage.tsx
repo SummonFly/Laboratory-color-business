@@ -76,7 +76,7 @@ export const StockMovementsPage = () => {
 
     return (
         <div>
-            <h1 className="text-2xl font-bold text-gray-900 mb-6">Stock Management</h1>
+            <h1 className="text-2xl font-bold text-black mb-6">Stock Management</h1>
 
             {/* Tabs */}
             <div className="border-b border-gray-200 mb-6">

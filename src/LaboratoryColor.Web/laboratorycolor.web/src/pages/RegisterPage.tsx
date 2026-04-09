@@ -49,7 +49,7 @@ export const RegisterPage = () => {
                     <div className="flex justify-center">
                         <CubeIcon className="h-12 w-12 text-primary-600" />
                     </div>
-                    <h2 className="mt-6 text-3xl font-extrabold text-gray-900">
+                    <h2 className="mt-6 text-3xl font-extrabold text-black">
                         Create account
                     </h2>
                     <p className="mt-2 text-sm text-gray-600">

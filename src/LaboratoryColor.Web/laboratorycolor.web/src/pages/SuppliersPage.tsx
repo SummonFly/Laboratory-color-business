@@ -76,7 +76,7 @@ export const SuppliersPage = () => {
     return (
         <div>
             <div className="flex items-center justify-between mb-6">
-                <h1 className="text-2xl font-bold text-gray-900">Suppliers</h1>
+                <h1 className="text-2xl font-bold text-black">Suppliers</h1>
                 <button
                     onClick={openCreateForm}
                     className="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-primary-600 rounded-lg hover:bg-primary-700"

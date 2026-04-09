@@ -10,7 +10,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="laboratorycolor.web\src\components\ui" />
-    <Folder Include="laboratorycolor.web\src\hooks\" />
     <Folder Include="laboratorycolor.web\src\utils\" />
   </ItemGroup>
 </Project>

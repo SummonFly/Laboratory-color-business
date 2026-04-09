@@ -1,7 +1,9 @@
 ﻿using LaboratoryColor.Application.DTOs.Auth;
 using LaboratoryColor.Application.Interfaces;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using System.Data;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -12,14 +14,19 @@ namespace LaboratoryColor.Infrastructure.Identity
     public class TokenService : ITokenService
     {
         private readonly IConfiguration _configuration;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public TokenService(IConfiguration configuration)
+        public TokenService(IConfiguration configuration, UserManager<ApplicationUser> userManager)
         {
             _configuration = configuration;
+            _userManager = userManager;
         }
 
         public async Task<string> CreateToken(ApplicationUserDto user)
         {
+            var appUser = await _userManager.FindByIdAsync(user.Id);
+            var roles = await _userManager.GetRolesAsync(appUser);
+
             var claims = new List<Claim>
         {
             new Claim(JwtRegisteredClaimNames.Sub, user.Id),
@@ -29,7 +36,10 @@ namespace LaboratoryColor.Infrastructure.Identity
             new Claim(ClaimTypes.Name, user.UserName)
         };
 
-            // Роли пока без них, можно добавить позже
+            foreach (var role in roles)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, role));
+            }
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
                 _configuration["JWT:Secret"] ?? throw new Exception("JWT Secret not configured")));

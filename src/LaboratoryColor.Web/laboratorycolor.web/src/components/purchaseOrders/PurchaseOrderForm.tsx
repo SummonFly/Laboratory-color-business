@@ -83,9 +83,16 @@ export const PurchaseOrderForm: React.FC<PurchaseOrderFormProps> = ({
 
         if (!supplierId || items.length === 0) return;
 
+        // Format date to ISO string with time
+        let formattedDeliveryDate: string | undefined;
+        if (expectedDeliveryDate) {
+            // Convert YYYY-MM-DD to ISO string (UTC)
+            formattedDeliveryDate = new Date(expectedDeliveryDate).toISOString();
+        }
+
         onSubmit({
             supplierId: parseInt(supplierId),
-            expectedDeliveryDate: expectedDeliveryDate || undefined,
+            expectedDeliveryDate: formattedDeliveryDate,
             notes: notes || undefined,
             items: items.map(({ id, productName, ...rest }) => rest),
         });

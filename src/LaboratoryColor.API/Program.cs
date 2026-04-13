@@ -51,6 +51,7 @@ namespace LaboratoryColor.API
                 });
             });
 
+
             // CORS настройка
             var corsOrigins = builder.Configuration.GetValue<string>("CORS:Origins", "http://localhost:3000,http://localhost")
                 .Split(',', StringSplitOptions.RemoveEmptyEntries);

@@ -1,7 +1,9 @@
 ﻿using LaboratoryColor.Application.Interfaces;
+using LaboratoryColor.Infrastructure.Background;
 using LaboratoryColor.Infrastructure.Identity;
 using LaboratoryColor.Infrastructure.Persistence;
 using LaboratoryColor.Infrastructure.Services;
+using LaboratoryColor.Infrastructure.Simulation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -55,6 +57,14 @@ namespace LaboratoryColor.Infrastructure
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());
             services.AddScoped<IUserService, UserService>();
+
+            //Simulation
+            var simulationConfig = new SimulationConfig();
+            services.AddSingleton(simulationConfig);
+            services.AddSingleton<ISimulationLogger, SimulationLogger>();
+            services.AddSingleton<SimulationHostedService>();
+            services.AddHostedService(provider => provider.GetRequiredService<SimulationHostedService>());
+            services.AddScoped<ITestDataService, TestDataService>();
 
             return services;
         }

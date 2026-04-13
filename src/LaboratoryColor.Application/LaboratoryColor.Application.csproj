@@ -12,9 +12,6 @@
 
   <ItemGroup>
     <Folder Include="Common\Exceptions\" />
-    <Folder Include="DTOs\Orders\" />
-    <Folder Include="Features\Orders\Queries\" />
-    <Folder Include="Features\Orders\Commands\" />
   </ItemGroup>
 
   <ItemGroup>

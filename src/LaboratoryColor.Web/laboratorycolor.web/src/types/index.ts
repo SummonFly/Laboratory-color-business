@@ -110,7 +110,7 @@ export interface StockMovementSummary {
 
 // ============= Discounts =============
 export type DiscountType = 'Percentage' | 'FixedAmount';
-export type DiscountRuleType = 'All' | 'Category' | 'Product' | 'TotalAmount';
+export type DiscountRuleType = 'All' | 'Category' | 'Product' | 'AttributeValue' | 'CustomerRole' | 'TotalAmount';
 
 export interface DiscountRule {
     id: number;
@@ -133,8 +133,8 @@ export interface Discount {
     description?: string | null;
     discountType: DiscountType;
     discountValue: number;
-    startDate: string; // DateTime
-    endDate: string; // DateTime
+    startDate: string;
+    endDate: string;
     isActive: boolean;
     priority: number;
     rules: DiscountRule[];

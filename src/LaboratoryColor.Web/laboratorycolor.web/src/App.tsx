@@ -9,7 +9,7 @@ import { CategoriesPage } from './pages/CategoriesPage';
 import { SuppliersPage } from './pages/SuppliersPage';
 import { StockMovementsPage } from './pages/StockMovementsPage';
 import { PurchaseOrdersPage } from './pages/PurchaseOrdersPage';
-
+import { DiscountsPage } from './pages/DiscountsPage';
 
 
 function App() {
@@ -29,6 +29,7 @@ function App() {
                         <Route path="/suppliers" element={<SuppliersPage />} />
                         <Route path="/purchase-orders" element={<PurchaseOrdersPage />} />
                         <Route path="/stock-movements" element={<StockMovementsPage />} />
+                        <Route path="/discounts" element={<DiscountsPage />} />
                     </Route>
 
                     {/* 404 */}

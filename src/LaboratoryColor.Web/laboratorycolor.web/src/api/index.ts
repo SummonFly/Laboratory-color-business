@@ -52,4 +52,7 @@ export type {
     CreateDiscountRuleRequest,
     CreateDiscountRequest,
     UpdateDiscountRequest,
+    GetDiscountsParams,
+    CreateCouponRequest,
+    ValidateCouponResponse,
 } from './discounts';

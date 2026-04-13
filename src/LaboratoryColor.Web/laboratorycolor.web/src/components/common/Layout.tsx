@@ -9,6 +9,7 @@ import {
     ChartBarIcon,
     ArrowRightOnRectangleIcon,
     UserCircleIcon,
+    TagIcon,
 } from '@heroicons/react/24/outline';
 
 const navigation = [
@@ -17,6 +18,7 @@ const navigation = [
     { name: 'Suppliers', href: '/suppliers', icon: TruckIcon },
     { name: 'Purchase Orders', href: '/purchase-orders', icon: ShoppingCartIcon },
     { name: 'Stock Movements', href: '/stock-movements', icon: ChartBarIcon },
+    { name: 'Discounts', href: '/discounts', icon: TagIcon },
 ];
 
 export const Layout: React.FC = () => {

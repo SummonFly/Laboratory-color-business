@@ -6,20 +6,13 @@ import { ReceiveOrderModal } from '../components/purchaseOrders/ReceiveOrderModa
 import type { CreatePurchaseOrderRequest, ReceivePurchaseOrderRequest, PurchaseOrderStatus } from '../api';
 import { format } from 'date-fns';
 
-type StatusColor = {
-    [key in PurchaseOrderStatus]: string;
+
+const statusColors: Record<PurchaseOrderStatus, string> = {
+  'Pending': 'bg-yellow-100 text-yellow-800',
+  'Shipped': 'bg-purple-100 text-purple-800',
+  'Received': 'bg-green-100 text-green-800',
+  'Cancelled': 'bg-red-100 text-red-800',
 };
-
-const statusColors: StatusColor = {
-    'Pending': 'bg-yellow-100 text-yellow-800',
-    'Processing': 'bg-blue-100 text-blue-800',
-    'Shipped': 'bg-purple-100 text-purple-800',
-    'Delivered': 'bg-green-100 text-green-800',
-    'Cancelled': 'bg-red-100 text-red-800',
-};
-
-const statusOrder: PurchaseOrderStatus[] = ['Pending', 'Processing', 'Shipped', 'Delivered'];
-
 
 export const PurchaseOrdersPage = () => {
     const [isFormOpen, setIsFormOpen] = useState(false);
@@ -49,9 +42,19 @@ export const PurchaseOrdersPage = () => {
         setIsFormOpen(false);
     };
 
-    const handleUpdateStatus = (orderId: number, newStatus: PurchaseOrderStatus) => {
+    const handleUpdateStatus = (orderId: number, newStatus: string) => {
+        const statusToNumber: Record<string, number> = {
+            'Pending': 1,
+            'Shipped': 2,
+            'Received': 3,
+            'Cancelled': 4,
+        };
+
         if (window.confirm(`Change order status to ${newStatus}?`)) {
-            updateStatus.mutate({ purchaseOrderId: orderId, status: newStatus });
+            updateStatus.mutate({
+                purchaseOrderId: orderId,
+                status: statusToNumber[newStatus]
+            });
         }
     };
 
@@ -66,7 +69,8 @@ export const PurchaseOrdersPage = () => {
         setIsReceiveModalOpen(true);
     };
 
-    const getNextStatus = (currentStatus: PurchaseOrderStatus): PurchaseOrderStatus | null => {
+    const getNextStatus = (currentStatus: string): string | null => {
+        const statusOrder = ['Pending', 'Shipped', 'Received'];
         const currentIndex = statusOrder.indexOf(currentStatus);
         if (currentIndex === -1 || currentIndex === statusOrder.length - 1) return null;
         return statusOrder[currentIndex + 1];
@@ -219,7 +223,7 @@ export const PurchaseOrdersPage = () => {
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                         <div className="flex justify-end gap-2">
-                                            {order.status !== 'Delivered' && order.status !== 'Cancelled' && (
+                                            {order.status !== 'Received' && order.status !== 'Cancelled' && (
                                                 <button
                                                     onClick={() => openReceiveModal(order.id)}
                                                     className="text-green-600 hover:text-green-900"

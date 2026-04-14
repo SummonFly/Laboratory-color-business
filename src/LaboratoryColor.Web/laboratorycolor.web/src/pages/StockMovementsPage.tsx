@@ -300,9 +300,9 @@ export const StockMovementsPage = () => {
                                                         {movement.movementType}
                                                     </span>
                                                 </td>
-                                                <td className={`px-6 py-4 whitespace-nowrap text-sm font-medium ${movement.movementType === 'In' ? 'text-green-600' : 'text-red-600'
+                                                <td className={`px-6 py-4 whitespace-nowrap text-sm font-medium ${movement.quantity > 0 ? 'text-green-600' : 'text-red-600'
                                                     }`}>
-                                                    {movement.movementType === 'In' ? '+' : '-'}{Math.abs(movement.quantity)}
+                                                    {movement.quantity > 0 ? '+' : ''}{movement.quantity}
                                                 </td>
                                                 <td className="px-6 py-4 text-sm text-gray-500">
                                                     {movement.reason || '-'}

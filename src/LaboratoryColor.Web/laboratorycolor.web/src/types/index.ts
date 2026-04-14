@@ -57,7 +57,7 @@ export interface Supplier {
 }
 
 // ============= Purchase Orders =============
-export type PurchaseOrderStatus = 'Pending' | 'Processing' | 'Shipped' | 'Delivered' | 'Cancelled';
+export type PurchaseOrderStatus = 'Pending' | 'Shipped' | 'Received' | 'Cancelled';
 
 export interface PurchaseOrderItem {
     id: number;

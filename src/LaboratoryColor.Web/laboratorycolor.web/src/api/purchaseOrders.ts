@@ -1,7 +1,7 @@
 import { apiClient } from './client';
 import type { PurchaseOrder } from '../types';
 
-export type PurchaseOrderStatus = 'Pending' | 'Processing' | 'Shipped' | 'Delivered' | 'Cancelled';
+export type PurchaseOrderStatus = 'Pending' | 'Shipped' | 'Received' | 'Cancelled';
 
 export interface GetPurchaseOrdersParams {
     supplierId?: number;
@@ -25,7 +25,7 @@ export interface CreatePurchaseOrderRequest {
 
 export interface UpdatePurchaseOrderStatusRequest {
     purchaseOrderId: number;
-    status: PurchaseOrderStatus;
+    status: number; 
 }
 
 export interface ReceivePurchaseOrderItemRequest {
@@ -55,7 +55,10 @@ export const purchaseOrdersAPI = {
     },
 
     updateStatus: async (data: UpdatePurchaseOrderStatusRequest): Promise<void> => {
-        await apiClient.patch(`/PurchaseOrders/${data.purchaseOrderId}/status`, { status: data.status });
+        await apiClient.patch(`/PurchaseOrders/${data.purchaseOrderId}/status`, {
+            purchaseOrderId: data.purchaseOrderId,
+            status: data.status,
+        });
     },
 
     receive: async (data: ReceivePurchaseOrderRequest): Promise<void> => {

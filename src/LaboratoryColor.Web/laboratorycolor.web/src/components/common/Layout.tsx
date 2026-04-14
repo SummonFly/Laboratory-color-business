@@ -12,6 +12,7 @@ import {
     TagIcon,
     ClipboardDocumentListIcon,
     CommandLineIcon,
+    RocketLaunchIcon,
 } from '@heroicons/react/24/outline';
 
 
@@ -24,6 +25,7 @@ const navigation = [
     { name: 'Orders', href: '/orders', icon: ClipboardDocumentListIcon },
     { name: 'Stock Movements', href: '/stock-movements', icon: ChartBarIcon },
     { name: 'Discounts', href: '/discounts', icon: TagIcon },
+    { name: 'Simulation', href: '/simulation', icon: RocketLaunchIcon },
     { name: 'Dev Panel', href: '/dev', icon: CommandLineIcon },
 ];
 

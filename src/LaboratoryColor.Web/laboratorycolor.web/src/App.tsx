@@ -13,6 +13,7 @@ import { DiscountsPage } from './pages/DiscountsPage';
 import { DashboardPage } from './pages/DashboardPage';
 import { OrdersPage } from './pages/OrdersPage';
 import { DevPanelPage } from './pages/DevPanelPage';
+import { SimulationPanelPage } from './pages/SimulationPanelPage';
 
 
 function App() {
@@ -36,6 +37,7 @@ function App() {
                         <Route path="/discounts" element={<DiscountsPage />} />
                         <Route path="/orders" element={<OrdersPage />} />
                         <Route path="/dev" element={<DevPanelPage />} />
+                        <Route path="/simulation" element={<SimulationPanelPage />} />
                     </Route>
 
                     {/* 404 */}

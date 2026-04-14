@@ -9,6 +9,7 @@ export { discountsAPI } from './discounts';
 export { dashboardAPI } from './dashboard';
 export { ordersAPI } from './orders';
 export { devAPI } from './dev';
+export { simulationAPI } from './simulation';
 export type { PurchaseOrder, PurchaseOrderItem } from '../types';
 
 export type {
@@ -81,3 +82,9 @@ export type {
     TestDataStatusDto,
     OperationResultDto,
 } from './dev';
+
+export type {
+    SimulationConfig,
+    SimulationStatusDto,
+    SimulationLogDto,
+} from './simulation';

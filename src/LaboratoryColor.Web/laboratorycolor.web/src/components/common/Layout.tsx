@@ -11,6 +11,7 @@ import {
     UserCircleIcon,
     TagIcon,
     ClipboardDocumentListIcon,
+    CommandLineIcon,
 } from '@heroicons/react/24/outline';
 
 
@@ -23,6 +24,7 @@ const navigation = [
     { name: 'Orders', href: '/orders', icon: ClipboardDocumentListIcon },
     { name: 'Stock Movements', href: '/stock-movements', icon: ChartBarIcon },
     { name: 'Discounts', href: '/discounts', icon: TagIcon },
+    { name: 'Dev Panel', href: '/dev', icon: CommandLineIcon },
 ];
 
 export const Layout: React.FC = () => {

@@ -8,6 +8,7 @@ export { stockMovementsAPI } from './stockMovements';
 export { discountsAPI } from './discounts';
 export { dashboardAPI } from './dashboard';
 export { ordersAPI } from './orders';
+export { devAPI } from './dev';
 export type { PurchaseOrder, PurchaseOrderItem } from '../types';
 
 export type {
@@ -75,3 +76,8 @@ export type {
     GetOrdersParams,
     UpdateOrderStatusRequest,
 } from './orders';
+
+export type {
+    TestDataStatusDto,
+    OperationResultDto,
+} from './dev';

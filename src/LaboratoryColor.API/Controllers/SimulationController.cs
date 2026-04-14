@@ -58,6 +58,7 @@ namespace LaboratoryColor.API.Controllers
         {
             _config.IsEnabled = newConfig.IsEnabled;
             _config.OrderGenerationIntervalSeconds = newConfig.OrderGenerationIntervalSeconds;
+            _config.AutoReceiveIntervalSeconds = newConfig.AutoReceiveIntervalSeconds;
             _config.LowStockThreshold = newConfig.LowStockThreshold;
             _config.MinItemsPerOrder = newConfig.MinItemsPerOrder;
             _config.MaxItemsPerOrder = newConfig.MaxItemsPerOrder;

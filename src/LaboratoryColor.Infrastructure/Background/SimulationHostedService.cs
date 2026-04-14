@@ -34,7 +34,6 @@ namespace LaboratoryColor.Infrastructure.Background
 
         public void Start()
         {
-            _logger.Log($"Start() called. Config from service: IsEnabled={_config.IsEnabled}, HashCode={_config.GetHashCode()}", "DEBUG");
             _logger.Log($"Start() called. Order interval: {_config.OrderGenerationIntervalSeconds} sec", "DEBUG");
 
             if (_isRunning) return;
@@ -110,26 +109,35 @@ namespace LaboratoryColor.Infrastructure.Background
 
         private async Task CheckLowStockAndReorder(IApplicationDbContext context)
         {
+            _logger.Log($"CheckLowStockAndReorder called. Threshold={_config.LowStockThreshold}", "DEBUG");
+
             var lowStockProducts = await context.Products
                 .Where(p => p.CurrentStock <= _config.LowStockThreshold)
                 .ToListAsync();
 
+            _logger.Log($"Found {lowStockProducts.Count} products with low stock", "DEBUG");
+
             foreach (var product in lowStockProducts)
             {
-                // Проверить, есть ли уже ожидаемая поставка
-                var hasPendingOrder = await context.PurchaseOrders
-                    .AnyAsync(po => po.Status == PurchaseOrderStatus.Pending || po.Status == PurchaseOrderStatus.Shipped);
+                var hasPendingOrderForProduct = await context.PurchaseOrders
+                    .Where(po => (po.Status == PurchaseOrderStatus.Pending || po.Status == PurchaseOrderStatus.Shipped))
+                    .SelectMany(po => po.Items)
+                    .AnyAsync(item => item.ProductId == product.Id);
 
-                if (hasPendingOrder) continue;
 
-                // Создать заказ поставщику
+                if (hasPendingOrderForProduct) continue;
+
                 var supplier = await context.Suppliers.FindAsync(_config.DefaultSupplierId);
-                if (supplier == null) continue;
+                if (supplier == null)
+                {
+                    _logger.Log($"Supplier with ID {_config.DefaultSupplierId} not found!", "ERROR");
+                    continue;
+                }
 
                 var orderNumber = $"AUTO-{DateTime.Now:yyyyMMddHHmmss}";
                 var purchaseOrder = new PurchaseOrder(supplier, orderNumber);
                 purchaseOrder.AddItem(product, _config.DefaultOrderQuantity, product.Price);
-                purchaseOrder.SetExpectedDeliveryDate(DateTime.Now.AddDays(_config.DefaultDeliveryDays));
+                purchaseOrder.SetExpectedDeliveryDate(DateTime.UtcNow.AddDays(_config.DefaultDeliveryDays));
 
                 context.PurchaseOrders.Add(purchaseOrder);
                 await context.SaveChangesAsync(CancellationToken.None);
@@ -141,10 +149,12 @@ namespace LaboratoryColor.Infrastructure.Background
         private async Task AutoReceivePurchaseOrders(IApplicationDbContext context)
         {
             var readyToReceive = await context.PurchaseOrders
-                .Where(po => po.Status == PurchaseOrderStatus.Shipped &&
+                .Where(po => (po.Status == PurchaseOrderStatus.Pending || po.Status == PurchaseOrderStatus.Shipped) &&
                              po.ExpectedDeliveryDate <= DateTime.UtcNow)
                 .Include(po => po.Items)
                 .ToListAsync();
+
+            _logger.Log($"AutoReceivePurchaseOrders readyToReceive{readyToReceive.Count()}", "DEBUG");
 
             foreach (var purchaseOrder in readyToReceive)
             {

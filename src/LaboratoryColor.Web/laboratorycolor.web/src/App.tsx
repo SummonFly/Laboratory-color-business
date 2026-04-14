@@ -10,6 +10,8 @@ import { SuppliersPage } from './pages/SuppliersPage';
 import { StockMovementsPage } from './pages/StockMovementsPage';
 import { PurchaseOrdersPage } from './pages/PurchaseOrdersPage';
 import { DiscountsPage } from './pages/DiscountsPage';
+import { DashboardPage } from './pages/DashboardPage';
+import { OrdersPage } from './pages/OrdersPage';
 
 
 function App() {
@@ -23,13 +25,15 @@ function App() {
 
                     {/* Protected routes with layout */}
                     <Route element={<ProtectedRoute><Layout /></ProtectedRoute>}>
-                        <Route path="/" element={<Navigate to="/products" replace />} />
+                        <Route path="/" element={<Navigate to="/dashboard" replace />} />
+                        <Route path="/dashboard" element={<DashboardPage />} />
                         <Route path="/products" element={<ProductsPage />} />
                         <Route path="/categories" element={<CategoriesPage />} />
                         <Route path="/suppliers" element={<SuppliersPage />} />
                         <Route path="/purchase-orders" element={<PurchaseOrdersPage />} />
                         <Route path="/stock-movements" element={<StockMovementsPage />} />
                         <Route path="/discounts" element={<DiscountsPage />} />
+                        <Route path="/orders" element={<OrdersPage />} />
                     </Route>
 
                     {/* 404 */}

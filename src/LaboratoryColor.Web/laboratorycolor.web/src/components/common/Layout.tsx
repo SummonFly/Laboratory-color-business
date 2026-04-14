@@ -10,13 +10,17 @@ import {
     ArrowRightOnRectangleIcon,
     UserCircleIcon,
     TagIcon,
+    ClipboardDocumentListIcon,
 } from '@heroicons/react/24/outline';
 
+
 const navigation = [
+    { name: 'Dashboard', href: '/dashboard', icon: ChartBarIcon },
     { name: 'Products', href: '/products', icon: CubeIcon },
     { name: 'Categories', href: '/categories', icon: FolderIcon },
     { name: 'Suppliers', href: '/suppliers', icon: TruckIcon },
     { name: 'Purchase Orders', href: '/purchase-orders', icon: ShoppingCartIcon },
+    { name: 'Orders', href: '/orders', icon: ClipboardDocumentListIcon },
     { name: 'Stock Movements', href: '/stock-movements', icon: ChartBarIcon },
     { name: 'Discounts', href: '/discounts', icon: TagIcon },
 ];

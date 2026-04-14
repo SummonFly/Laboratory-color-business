@@ -6,6 +6,8 @@ export { suppliersAPI } from './suppliers';
 export { purchaseOrdersAPI } from './purchaseOrders';
 export { stockMovementsAPI } from './stockMovements';
 export { discountsAPI } from './discounts';
+export { dashboardAPI } from './dashboard';
+export { ordersAPI } from './orders';
 export type { PurchaseOrder, PurchaseOrderItem } from '../types';
 
 export type {
@@ -56,3 +58,20 @@ export type {
     CreateCouponRequest,
     ValidateCouponResponse,
 } from './discounts';
+
+export type {
+    DashboardDto,
+    StockSummaryDto,
+    SalesSummaryDto,
+    PopularProductDto,
+    LowStockProductDto,
+    GetDashboardParams,
+} from './dashboard';
+
+export type {
+    OrderDto,
+    OrderItemDto,
+    OrderStatus,
+    GetOrdersParams,
+    UpdateOrderStatusRequest,
+} from './orders';

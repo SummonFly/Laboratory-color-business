@@ -21,7 +21,7 @@ Business solution for auto paint store management with warehouse, suppliers, ord
 
 ```bash
 # Clone repository
-git clone https://github.com/YOUR_USERNAME/laboratory-color-business.git
+git clone https://github.com/SummonFly/laboratory-color-business.git
 cd laboratory-color-business
 
 # Run with Docker Compose

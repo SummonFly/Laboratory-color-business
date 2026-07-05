@@ -15,7 +15,7 @@ Business solution for auto paint store management with warehouse, suppliers, ord
 - .NET 8
 - PostgreSQL
 - Docker & Docker Compose
-- React (coming soon)
+- React
 
 ## Quick Start
 

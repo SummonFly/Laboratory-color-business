@@ -5,10 +5,13 @@ import { ProductForm } from '../components/products/ProductForm';
 import type { CreateProductRequest, UpdateProductRequest } from '../api';
 import { useCreateProduct, useUpdateProduct } from '../hooks/useProducts';
 import type { Product } from '../types';
+import { useAuth } from '../context';
 
 export const ProductsPage = () => {
     const [isFormOpen, setIsFormOpen] = useState(false);
     const [editingProduct, setEditingProduct] = useState<Product | null>(null);
+
+    const { isAdmin } = useAuth();
 
     const { data: products, isLoading, error } = useProducts();
     const createProduct = useCreateProduct();
@@ -133,12 +136,14 @@ export const ProductsPage = () => {
                                     >
                                         <PencilIcon className="w-5 h-5" />
                                     </button>
-                                    <button
-                                        onClick={() => handleDelete(product.id)}
-                                        className="text-red-600 hover:text-red-900"
-                                    >
-                                        <TrashIcon className="w-5 h-5" />
-                                    </button>
+                                    {isAdmin && (
+                                        <button
+                                            onClick={() => handleDelete(product.id)}
+                                            className="text-red-600 hover:text-red-900"
+                                        >
+                                            <TrashIcon className="w-5 h-5" />
+                                        </button>
+                                    )}
                                 </td>
                             </tr>
                         ))}

@@ -4,8 +4,12 @@ import type { ApplicationUser, AuthResponse } from '../types';
 
 interface AuthContextType {
     user: ApplicationUser | null;
+    roles: string[];
     isAuthenticated: boolean;
     isLoading: boolean;
+    isAdmin: boolean;
+    isManager: boolean;
+    isDeveloper: boolean;
     login: (userName: string, password: string) => Promise<void>;
     register: (userName: string, email: string, password: string) => Promise<void>;
     logout: () => Promise<void>;
@@ -27,6 +31,7 @@ interface AuthProviderProps {
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const [user, setUser] = useState<ApplicationUser | null>(null);
+    const [roles, setRoles] = useState<string[]>([]);
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
@@ -40,10 +45,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             try {
                 const currentUser = await authAPI.getCurrentUser();
                 setUser(currentUser);
+                // Note: getCurrentUser may not return roles, so we keep existing roles or fetch separately
             } catch (error) {
                 localStorage.removeItem('access_token');
                 localStorage.removeItem('refresh_token');
                 setUser(null);
+                setRoles([]);
             } finally {
                 setIsLoading(false);
             }
@@ -65,6 +72,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
                 userName: response.userName,
                 email: response.email,
             });
+            setRoles(response.roles);
         } catch (error) {
             throw error;
         } finally {
@@ -99,16 +107,25 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             localStorage.removeItem('access_token');
             localStorage.removeItem('refresh_token');
             setUser(null);
+            setRoles([]);
             setIsLoading(false);
         }
     };
+
+    const isAdmin = roles.includes('Admin');
+    const isManager = roles.includes('Manager');
+    const isDeveloper = roles.includes('Developer');
 
     return (
         <AuthContext.Provider
             value={{
                 user,
+                roles,
                 isAuthenticated: !!user,
                 isLoading,
+                isAdmin,
+                isManager,
+                isDeveloper,
                 login,
                 register,
                 logout,

@@ -1,4 +1,6 @@
 ﻿import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context';
 import {
     PlayIcon,
     StopIcon,
@@ -14,6 +16,19 @@ import { format } from 'date-fns';
 export const SimulationPanelPage = () => {
     const [isConfigOpen, setIsConfigOpen] = useState(false);
     const [config, setConfig] = useState<SimulationConfig | null>(null);
+
+    const { isDeveloper, isAdmin, isLoading: authLoading } = useAuth();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (!authLoading && !isDeveloper && !isAdmin) {
+            navigate('/dashboard');
+        }
+    }, [isDeveloper, isAdmin, authLoading, navigate]);
+
+    if (!isDeveloper && !isAdmin) {
+        return null;
+    }
 
     const { data: status, isLoading: statusLoading, refetch: refetchStatus } = useSimulationStatus();
     const { data: logs, isLoading: logsLoading } = useSimulationLogs();

@@ -1,4 +1,7 @@
 ﻿import { useState } from 'react';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context';
 import {
     BeakerIcon,
     TrashIcon,
@@ -11,6 +14,19 @@ import { useTestDataStatus, useSeedTestData, useClearTestData } from '../hooks/u
 export const DevPanelPage = () => {
     const [isSeeding, setIsSeeding] = useState(false);
     const [isClearing, setIsClearing] = useState(false);
+
+    const { isDeveloper, isLoading: authLoading } = useAuth();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (!authLoading && !isDeveloper) {
+            navigate('/dashboard');
+        }
+    }, [isDeveloper, authLoading, navigate]);
+
+    if (!isDeveloper) {
+        return null;
+    }
 
     const { data: status, isLoading, refetch } = useTestDataStatus();
     const seedMutation = useSeedTestData();

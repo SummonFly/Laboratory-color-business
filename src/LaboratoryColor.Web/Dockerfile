@@ -3,9 +3,14 @@ WORKDIR /app
 
 COPY laboratorycolor.web/package*.json ./laboratorycolor.web/
 WORKDIR /app/laboratorycolor.web
+
+ARG REACT_APP_API_URL
+ENV REACT_APP_API_URL=$REACT_APP_API_URL
+
 RUN npm install
 
 COPY laboratorycolor.web/ ./
+
 RUN npm run build
 
 FROM nginx:stable-alpine

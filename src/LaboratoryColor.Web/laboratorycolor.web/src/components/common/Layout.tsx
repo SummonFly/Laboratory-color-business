@@ -15,28 +15,36 @@ import {
     RocketLaunchIcon,
 } from '@heroicons/react/24/outline';
 
-
-const navigation = [
-    { name: 'Dashboard', href: '/dashboard', icon: ChartBarIcon },
-    { name: 'Products', href: '/products', icon: CubeIcon },
-    { name: 'Categories', href: '/categories', icon: FolderIcon },
-    { name: 'Suppliers', href: '/suppliers', icon: TruckIcon },
-    { name: 'Purchase Orders', href: '/purchase-orders', icon: ShoppingCartIcon },
-    { name: 'Orders', href: '/orders', icon: ClipboardDocumentListIcon },
-    { name: 'Stock Movements', href: '/stock-movements', icon: ChartBarIcon },
-    { name: 'Discounts', href: '/discounts', icon: TagIcon },
-    { name: 'Simulation', href: '/simulation', icon: RocketLaunchIcon },
-    { name: 'Dev Panel', href: '/dev', icon: CommandLineIcon },
+const allNavigation = [
+    { name: 'Dashboard', href: '/dashboard', icon: ChartBarIcon, roles: [] },
+    { name: 'Products', href: '/products', icon: CubeIcon, roles: [] },
+    { name: 'Categories', href: '/categories', icon: FolderIcon, roles: [] },
+    { name: 'Suppliers', href: '/suppliers', icon: TruckIcon, roles: [] },
+    { name: 'Purchase Orders', href: '/purchase-orders', icon: ShoppingCartIcon, roles: [] },
+    { name: 'Orders', href: '/orders', icon: ClipboardDocumentListIcon, roles: [] },
+    { name: 'Stock Movements', href: '/stock-movements', icon: ChartBarIcon, roles: [] },
+    { name: 'Discounts', href: '/discounts', icon: TagIcon, roles: [] },
+    { name: 'Simulation', href: '/simulation', icon: RocketLaunchIcon, roles: ['Admin', 'Developer'] },
+    { name: 'Dev Panel', href: '/dev', icon: CommandLineIcon, roles: ['Developer'] },
 ];
 
 export const Layout: React.FC = () => {
-    const { user, logout } = useAuth();
+    const { user, logout, isAdmin, isManager, isDeveloper } = useAuth();
     const navigate = useNavigate();
 
     const handleLogout = async () => {
         await logout();
         navigate('/login');
     };
+
+    // Filter navigation based on user roles
+    const navigation = allNavigation.filter(item => {
+        if (item.roles.length === 0) return true;
+        if (item.roles.includes('Admin') && isAdmin) return true;
+        if (item.roles.includes('Manager') && isManager) return true;
+        if (item.roles.includes('Developer') && isDeveloper) return true;
+        return false;
+    });
 
     return (
         <div className="min-h-screen bg-gray-50">
@@ -80,6 +88,9 @@ export const Layout: React.FC = () => {
                                 </p>
                                 <p className="text-xs text-gray-500 truncate">
                                     {user?.email || ''}
+                                </p>
+                                <p className="text-xs text-gray-400 truncate">
+                                    Roles: {isAdmin ? 'Admin ' : ''}{isManager ? 'Manager ' : ''}{isDeveloper ? 'Developer' : 'User'}
                                 </p>
                             </div>
                             <button

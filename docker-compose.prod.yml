@@ -41,7 +41,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.laboratory-api.rule=Host(`api.${DOMAIN_NAME}`)"
       - "traefik.http.routers.laboratory-api.entrypoints=websecure"
-      - "traefik.http.routers.laboratory-api.tls.certresolver=myresolver"
+      - "traefik.http.routers.laboratory-api.tls.certresolver=letsencrypt"
       - "traefik.http.services.laboratory-api.loadbalancer.server.port=8080"
 
   frontend:
@@ -60,7 +60,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.laboratory-front.rule=Host(`${DOMAIN_NAME}`)"
       - "traefik.http.routers.laboratory-front.entrypoints=websecure"
-      - "traefik.http.routers.laboratory-front.tls.certresolver=myresolver"
+      - "traefik.http.routers.laboratory-front.tls.certresolver=letsencrypt"
       - "traefik.http.services.laboratory-front.loadbalancer.server.port=80"
 
 volumes:

@@ -40,6 +40,12 @@ namespace LaboratoryColor.Domain.Entities
             UpdatedAt = DateTime.UtcNow;
         }
 
+        public void UpdateComment(string comment)
+        {
+            Comment = comment;
+            UpdatedAt = DateTime.UtcNow;
+        }
+
         private void RecalculateTotal()
         {
             var total = _orderItems.Sum(item => item.UnitPrice.Amount * item.Quantity);

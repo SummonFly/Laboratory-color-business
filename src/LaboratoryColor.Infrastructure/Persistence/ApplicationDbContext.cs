@@ -1,7 +1,6 @@
 ﻿using LaboratoryColor.Application.Interfaces;
 using LaboratoryColor.Domain.Entities;
 using LaboratoryColor.Infrastructure.Identity;
-using LaboratoryColor.Infrastructure.Persistence.Configurations;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 

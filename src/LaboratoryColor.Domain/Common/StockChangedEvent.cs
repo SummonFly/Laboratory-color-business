@@ -9,6 +9,13 @@ namespace LaboratoryColor.Domain.Common
 {
     public class StockChangedEvent : IDomainEvent
     {
+        public StockChangedEvent(int id, int quantityChange, int currentStock)
+        {
+            ProductId = id;
+            QuantityChange = quantityChange;
+            MovementType = StockMovementType.Transfer;
+        }
+
         public StockChangedEvent(int id, int quantityChange, StockMovementType movementType, string? reason)
         {
             ProductId = id;

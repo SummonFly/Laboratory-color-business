@@ -51,12 +51,23 @@ namespace LaboratoryColor.API
                 });
             });
 
-            // Настройка CORS для React
+
+            // CORS настройка
+            var corsOrigins = builder.Configuration.GetValue<string>("CORS:Origins", "http://localhost:3000,http://localhost")
+                .Split(',', StringSplitOptions.RemoveEmptyEntries);
+
+            if (corsOrigins.Contains("*"))
+            {
+                throw new InvalidOperationException(
+                    "CORS Configuration Error: The wildcard '*' is not allowed when 'AllowCredentials()' is enabled. " +
+                    "Please specify explicit origin URLs in your CORS:Origins environment variable.");
+            }
+
             builder.Services.AddCors(options =>
             {
                 options.AddPolicy("ReactApp", policy =>
                 {
-                    policy.WithOrigins("http://localhost:3000")
+                    policy.WithOrigins(corsOrigins)
                           .AllowAnyHeader()
                           .AllowAnyMethod()
                           .AllowCredentials();
@@ -65,20 +76,25 @@ namespace LaboratoryColor.API
 
             var app = builder.Build();
 
-            // Применяем миграции при старте (для контейнера)
+
             using (var scope = app.Services.CreateScope())
             {
-                var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-                try
+                var services = scope.ServiceProvider;
+                if (app.Environment.IsDevelopment())
                 {
-                    dbContext.Database.Migrate();
-                    Console.WriteLine("Migrations applied successfully");
+                    try
+                    {
+                        var dbContext = services.GetRequiredService<ApplicationDbContext>();
+                        dbContext.Database.Migrate();
+                        Console.WriteLine("Development migrations applied successfully.");
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Error applying migrations: {ex.Message}");
+                        throw;
+                    }
                 }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Error applying migrations: {ex.Message}");
-                    throw;
-                }
+                await SeedData.InitializeAsync(services);
             }
 
             // Configure the HTTP request pipeline.
@@ -86,20 +102,20 @@ namespace LaboratoryColor.API
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
+                app.UseHttpsRedirection();
             }
 
             app.UseCors("ReactApp");
-            app.UseHttpsRedirection();
+
+            if (!app.Environment.IsDevelopment())
+            {
+                app.UseForwardedHeaders();
+            }
 
             app.UseAuthentication();
             app.UseAuthorization();
             app.MapControllers();
 
-            // Seed data
-            using (var scope = app.Services.CreateScope())
-            {
-                await SeedData.InitializeAsync(scope.ServiceProvider);
-            }
 
             app.Run();
         }

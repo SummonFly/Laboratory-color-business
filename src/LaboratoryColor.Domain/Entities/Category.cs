@@ -17,6 +17,12 @@ namespace LaboratoryColor.Domain.Entities
             Name = name;
         }
 
+        public void UpdateName(string name)
+        {
+            Name = name;
+            UpdatedAt = DateTime.UtcNow;
+        }
+
         public void UpdateDescription(string? description)
         {
             Description = description;

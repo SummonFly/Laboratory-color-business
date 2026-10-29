@@ -1,7 +1,6 @@
 ﻿using LaboratoryColor.Application.DTOs.Auth;
 using LaboratoryColor.Application.Interfaces;
 using MediatR;
-using Microsoft.AspNetCore.Identity;
 
 namespace LaboratoryColor.Application.Features.Auth.Commands
 {
@@ -12,61 +11,61 @@ namespace LaboratoryColor.Application.Features.Auth.Commands
         public string Password { get; init; }
     }
 
-    //public class RegisterCommandHandler : IRequestHandler<RegisterCommand, AuthResponse>
-    //{
-    //    private readonly UserManager<IdentityUser> _userManager;
-    //    private readonly ITokenService _tokenService;
+    public class RegisterCommandHandler : IRequestHandler<RegisterCommand, AuthResponse>
+    {
+        private readonly IUserService _userService;
+        private readonly ITokenService _tokenService;
 
-    //    public RegisterCommandHandler(UserManager<IdentityUser> userManager, ITokenService tokenService)
-    //    {
-    //        _userManager = userManager;
-    //        _tokenService = tokenService;
-    //    }
+        public RegisterCommandHandler(IUserService userService, ITokenService tokenService)
+        {
+            _userService = userService;
+            _tokenService = tokenService;
+        }
 
-    //    public async Task<AuthResponse> Handle(RegisterCommand request, CancellationToken cancellationToken)
-    //    {
-    //        // Проверка существования пользователя
-    //        var existingUser = await _userManager.FindByNameAsync(request.UserName);
-    //        if (existingUser != null)
-    //            throw new Exception("User already exists");
+        public async Task<AuthResponse> Handle(RegisterCommand request, CancellationToken cancellationToken)
+        {
+            var existingUser = await _userService.FindByNameAsync(request.UserName);
+            if (existingUser != null)
+                throw new Exception("User already exists");
 
-    //        existingUser = await _userManager.FindByEmailAsync(request.Email);
-    //        if (existingUser != null)
-    //            throw new Exception("Email already registered");
+            existingUser = await _userService.FindByEmailAsync(request.Email);
+            if (existingUser != null)
+                throw new Exception("Email already registered");
 
-    //        // Создание пользователя
-    //        var user = new IdentityUser
-    //        {
-    //            UserName = request.UserName,
-    //            Email = request.Email,
-    //            EmailConfirmed = true
-    //        };
+            var newUser = new ApplicationUserDto
+            {
+                UserName = request.UserName,
+                Email = request.Email
+            };
 
-    //        var result = await _userManager.CreateAsync(user, request.Password);
+            var result = await _userService.CreateUserAsync(newUser, request.Password);
 
-    //        if (!result.Succeeded)
-    //        {
-    //            var errors = string.Join(", ", result.Errors.Select(e => e.Description));
-    //            throw new Exception($"Registration failed: {errors}");
-    //        }
+            if (!result.Succeeded)
+                throw new Exception($"Registration failed: {string.Join(", ", result.Errors)}");
 
-    //        // Назначение роли по умолчанию
-    //        await _userManager.AddToRoleAsync(user, "User");
+            // Получаем созданного пользователя
+            var user = await _userService.FindByNameAsync(request.UserName);
 
-    //        // Генерация токена
-    //        var token = await _tokenService.CreateToken(user);
-    //        var refreshToken = _tokenService.GenerateRefreshToken();
+            await _userService.AddToRoleAsync(user, "User");
 
-    //        return new AuthResponse
-    //        {
-    //            Token = token,
-    //            RefreshToken = refreshToken,
-    //            ExpiresAt = DateTime.UtcNow.AddHours(3),
-    //            UserId = user.Id,
-    //            UserName = user.UserName,
-    //            Email = user.Email,
-    //            Roles = new List<string> { "User" }
-    //        };
-    //    }
-    //}
+            var token = await _tokenService.CreateToken(user);
+            var refreshToken = _tokenService.GenerateRefreshToken();
+
+            user.RefreshToken = refreshToken;
+            user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7);
+
+            var roles = await _userService.GetRolesAsync(user);
+
+            return new AuthResponse
+            {
+                Token = token,
+                RefreshToken = refreshToken,
+                ExpiresAt = DateTime.UtcNow.AddHours(3),
+                UserId = user.Id,
+                UserName = user.UserName,
+                Email = user.Email,
+                Roles = roles.ToList()
+            };
+        }
+    }
 }

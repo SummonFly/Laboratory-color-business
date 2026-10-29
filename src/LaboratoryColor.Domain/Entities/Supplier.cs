@@ -28,6 +28,24 @@ namespace LaboratoryColor.Domain.Entities
             Name = name;
         }
 
+        public void UpdateName(string name)
+        {
+            Name = name;
+            UpdatedAt = DateTime.UtcNow;
+        }
+
+        public void UpdateInn(string? inn)
+        {
+            Inn = inn;
+            UpdatedAt = DateTime.UtcNow;
+        }
+
+        public void UpdateBankDetails(string? bankDetails)
+        {
+            BankDetails = bankDetails;
+            UpdatedAt = DateTime.UtcNow;
+        }
+
         public void UpdateContact(string? contactPerson, string? email, PhoneNumber? phone)
         {
             ContactPerson = contactPerson;

@@ -1,6 +1,7 @@
 ﻿using LaboratoryColor.Application.Interfaces;
 using LaboratoryColor.Domain.Exceptions;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,17 +29,14 @@ namespace LaboratoryColor.Application.Features.Products.Commands
 
         public async Task Handle(UpdateProductCommand request, CancellationToken cancellationToken)
         {
-            var product = await _context.Products.FindAsync(request.Id);
+            var product = await _context.Products.FindAsync(request.Id, cancellationToken);
 
             if (product == null)
                 throw new DomainException($"Product with id {request.Id} not found");
 
             // Обновляем название
             if (!string.IsNullOrEmpty(request.Name))
-            {
-                var property = product.GetType().GetProperty("Name");
-                property?.SetValue(product, request.Name);
-            }
+                product.UpdateName(request.Name);
 
             // Обновляем цену
             if (request.Price.HasValue)
@@ -47,12 +45,11 @@ namespace LaboratoryColor.Application.Features.Products.Commands
             // Обновляем категорию
             if (request.CategoryId.HasValue)
             {
-                var category = await _context.Categories.FindAsync(request.CategoryId.Value);
-                if (category == null)
+                var exist = await _context.Categories.AnyAsync(s => s.Id == request.CategoryId.Value);
+                if (!exist)
                     throw new DomainException($"Category with id {request.CategoryId} not found");
 
-                var property = product.GetType().GetProperty("CategoryId");
-                property?.SetValue(product, request.CategoryId.Value);
+                product.UpdateCategoryId(request.CategoryId.Value);
             }
 
             // Обновляем описание

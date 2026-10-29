@@ -35,13 +35,8 @@ namespace LaboratoryColor.Application.Features.Suppliers.Commands
 
             supplier.UpdateContact(request.ContactPerson, request.Email, phone);
             supplier.UpdateAddress(request.Address);
-
-            // Обновление Inn и BankDetails через рефлексию или добавить методы в Supplier
-            var innProperty = supplier.GetType().GetProperty("Inn");
-            innProperty?.SetValue(supplier, request.Inn);
-
-            var bankProperty = supplier.GetType().GetProperty("BankDetails");
-            bankProperty?.SetValue(supplier, request.BankDetails);
+            supplier.UpdateInn(request.Inn);
+            supplier.UpdateBankDetails(request.BankDetails);
 
             _context.Suppliers.Add(supplier);
             await _context.SaveChangesAsync(cancellationToken);

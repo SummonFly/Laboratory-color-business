@@ -35,10 +35,7 @@ namespace LaboratoryColor.Application.Features.Suppliers.Commands
                 throw new DomainException($"Supplier with id {request.Id} not found");
 
             if (!string.IsNullOrEmpty(request.Name))
-            {
-                var property = supplier.GetType().GetProperty("Name");
-                property?.SetValue(supplier, request.Name);
-            }
+                supplier.UpdateName(request.Name);
 
             if (!string.IsNullOrEmpty(request.ContactPerson) || !string.IsNullOrEmpty(request.Email) || request.Phone != null)
             {
@@ -53,16 +50,10 @@ namespace LaboratoryColor.Application.Features.Suppliers.Commands
                 supplier.UpdateAddress(request.Address);
 
             if (request.Inn != null)
-            {
-                var property = supplier.GetType().GetProperty("Inn");
-                property?.SetValue(supplier, request.Inn);
-            }
+                supplier.UpdateInn(request.Inn);
 
             if (request.BankDetails != null)
-            {
-                var property = supplier.GetType().GetProperty("BankDetails");
-                property?.SetValue(supplier, request.BankDetails);
-            }
+                supplier.UpdateBankDetails(request.BankDetails);
 
             if (request.IsActive.HasValue)
             {

@@ -19,7 +19,7 @@ namespace LaboratoryColor.Application.Features.Products.Commands
 
         public async Task Handle(DeleteProductCommand request, CancellationToken cancellationToken)
         {
-            var product = await _context.Products.FindAsync(request.Id);
+            var product = await _context.Products.FindAsync(request.Id, cancellationToken);
 
             if (product == null)
                 throw new DomainException($"Product with id {request.Id} not found");

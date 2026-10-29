@@ -26,11 +26,11 @@ namespace LaboratoryColor.Application.Features.Auth.Commands
         {
             var user = await _userService.FindByNameAsync(request.UserName);
             if (user == null)
-                throw new Exception("Invalid credentials");
+                throw new Exception("Invalid credentials"); //TODO use Auth Credentials Exception
 
             var isValidPassword = await _userService.CheckPasswordAsync(user, request.Password);
             if (!isValidPassword)
-                throw new Exception("Invalid credentials");
+                throw new Exception("Invalid credentials"); //TODO use Auth Credentials Exception
 
             var token = await _tokenService.CreateToken(user);
             var refreshToken = _tokenService.GenerateRefreshToken();

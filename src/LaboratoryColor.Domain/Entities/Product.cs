@@ -47,6 +47,17 @@ namespace LaboratoryColor.Domain.Entities
             AddDomainEvent(new StockChangedEvent(Id, quantityChange, movementType, reason));
         }
 
+        public void UpdateCategoryId(int categoryId)
+        {
+            CategoryId = categoryId;
+            UpdatedAt = DateTime.UtcNow;
+        }
+        public void UpdateName(string name)
+        {
+            Name = name;
+            UpdatedAt = DateTime.UtcNow;
+        }
+
         public void UpdateDescription(string description)
         {
             Description = description;

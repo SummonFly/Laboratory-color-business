@@ -54,11 +54,7 @@ namespace LaboratoryColor.Application.Features.Orders.Commands
                 request.CustomerEmail);
 
             if (!string.IsNullOrEmpty(request.Comment))
-            {
-                // Добавить Comment в Order (если нет, добавить метод)
-                var commentProperty = order.GetType().GetProperty("Comment");
-                commentProperty?.SetValue(order, request.Comment);
-            }
+                order.UpdateComment(request.Comment);
 
             // 3. Добавляем товары в заказ и списываем со склада
             foreach (var item in request.Items)

@@ -32,7 +32,6 @@ namespace LaboratoryColor.Application.Features.PurchaseOrders.Commands
 
         public async Task<int> Handle(CreatePurchaseOrderCommand request, CancellationToken cancellationToken)
         {
-            // Проверяем поставщика
             var supplier = await _context.Suppliers.FindAsync(request.SupplierId);
             if (supplier == null)
                 throw new DomainException($"Supplier with id {request.SupplierId} not found");

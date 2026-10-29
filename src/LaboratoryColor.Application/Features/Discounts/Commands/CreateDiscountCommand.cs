@@ -61,7 +61,7 @@ namespace LaboratoryColor.Application.Features.Discounts.Commands
                 discount.AddCoupon(coupon.Code, coupon.UsageLimit);
                 if (!string.IsNullOrEmpty(coupon.UserId))
                 {
-                    // Привязка к пользователю (можно добавить метод)
+                    //TODO: Привязка к пользователю (можно добавить метод)
                 }
             }
 

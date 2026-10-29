@@ -2,6 +2,7 @@
 using LaboratoryColor.Domain.Entities;
 using LaboratoryColor.Domain.Exceptions;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,8 +31,8 @@ namespace LaboratoryColor.Application.Features.Products.Commands
         public async Task<int> Handle(CreateProductCommand request, CancellationToken cancellationToken)
         {
             // Проверяем существует ли категория
-            var category = await _context.Categories.FindAsync(request.CategoryId);
-            if (category == null)
+            var exist = await _context.Categories.AnyAsync(s => s.Id == request.CategoryId, cancellationToken);
+            if (!exist)
                 throw new DomainException($"Category with id {request.CategoryId} not found");
 
             // Создаем продукт

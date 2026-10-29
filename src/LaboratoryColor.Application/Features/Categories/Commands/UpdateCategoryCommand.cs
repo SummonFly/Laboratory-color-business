@@ -22,17 +22,13 @@ namespace LaboratoryColor.Application.Features.Categories.Commands
 
         public async Task Handle(UpdateCategoryCommand request, CancellationToken cancellationToken)
         {
-            var category = await _context.Categories.FindAsync(request.Id);
+            var category = await _context.Categories.FindAsync(request.Id, cancellationToken);
 
             if (category == null)
                 throw new DomainException($"Category with id {request.Id} not found");
 
             if (!string.IsNullOrEmpty(request.Name))
-            {
-                // Через метод сущности, если добавите UpdateName
-                // Пока прямое изменение
-                category.GetType().GetProperty("Name")?.SetValue(category, request.Name);
-            }
+                category.UpdateName(request.Name);
 
             if (!string.IsNullOrEmpty(request.Description))
                 category.UpdateDescription(request.Description);

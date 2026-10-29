@@ -1,31 +1,92 @@
-# Laboratory Color Business Solution
+# 🎨 Laboratory Color Business Solution
 
-Business solution for auto paint store management with warehouse, suppliers, orders and discounts.
+[![NET 8](https://shields.io)](https://microsoft.com)
+[![React 19](https://shields.io)](https://react.dev)
+[![PostgreSQL](https://shields.io)](https://postgresql.org)
+[![Docker](https://shields.io)](https://docker.com)
 
-## Architecture
+**Laboratory Color** — веб-приложение для автоматизации внутренних бизнес-процессов розничной торговли автоэмалями и автокрасками (управление складом, поставщиками, заказами и аналитика). Особенность проекта — встроенный модуль фоновой симуляции торговых процессов.
 
-- **Clean Architecture** with Domain, Application, Infrastructure, API layers
-- **CQRS** with MediatR
-- **JWT Authentication** with Identity
-- **Entity Framework Core** with PostgreSQL
-- **Docker** containerization
+---
 
-## Tech Stack
+## 📷 Ключевые модули и интерфейс (UI)
 
-- .NET 8
-- PostgreSQL
-- Docker & Docker Compose
-- React (coming soon)
+### 📊 1. Аналитический Дашборд
+Центральный модуль для мониторинга финансового состояния и складских остатков магазина в реальном времени.
+* **Что наглядно видно:** общую стоимость товаров на складе (Total Stock Value), выручку, динамический график топ-продаж и автоматический аларм позиций, требующих закупки.
 
-## Quick Start
+![Аналитический дашборд](https://github.com/user-attachments/assets/02879e2b-fd3f-45ac-8565-667e984034c7)
 
-```bash
-# Clone repository
-git clone https://github.com/YOUR_USERNAME/laboratory-color-business.git
-cd laboratory-color-business
+---
 
-# Run with Docker Compose
-docker-compose up -d --build
+### 🤖 2. Панель автоматической симуляции (Бизнес-фича)
+Уникальный модуль системы — фоновый процесс (`BackgroundService`), имитирующий активность розничного магазина без участия реальных пользователей.
+* **Генерация спроса:** система создает случайные заказы от виртуальных клиентов, списывает остатки и рассчитывает чеки с учетом скидочных правил.
+* **Автономное снабжение:** при падении остатков ниже лимита бэкенд сам отправляет заказ поставщику, а по наступившей дате автоматически проводит приемку товара на склад.
+* **Гибкая конфигурация:** интервалы проверок, пороговые значения (Low Stock Alert) и вероятность совершения покупки настраиваются на лету через интерфейс.
 
-# Open Swagger
-http://localhost:5000/swagger
+| Мониторинг логов в реальном времени | Окно конфигурации параметров алгоритма |
+| :---: | :---: |
+| ![Панель фоновой симуляции](https://github.com/user-attachments/assets/f29f4001-9804-4e4a-9593-536ea5e2f8e3) | ![Конфигурация симуляции](https://github.com/user-attachments/assets/8476fc60-9f14-427d-afea-1e899a10ddfb) |
+
+---
+
+### 📦 3. Снабжение и Складской учет (B2B-модуль)
+Интерфейсы для управления закупками и полного контроля за движением материальных ценностей.
+* **Заказы поставщикам (Purchase Orders):** процесс создания заявок, калькуляция оптовой стоимости, фиксация ожидаемых дат поставок и поэтапный контроль статусов (Pending → Shipped → Received).
+* **Движения по складу (Stock Movements):** сквозной аудит склада. Каждое изменение остатка строго логируется с указанием типа движения (приход при закупке, расход при продаже, ручное списание) и документа-основания.
+
+| Оформление заказов поставщикам | История движений по складу |
+| :---: | :---: |
+| ![Заказы поставщикам](https://github.com/user-attachments/assets/5d868709-838d-440a-9877-7a12a12d400c) | ![Движения по складу](https://github.com/user-attachments/assets/d29e46f3-505b-4925-978e-757357eac1bb) |
+
+---
+
+## 🚀 Ключевой функционал
+
+* **📦 Склад и товары (CRUD):** учет автоэмалей, динамических характеристик («Цвет», «Объем»), управление категориями и движениями товаров (приход, расход, списание).
+* **🔄 Фоновая симуляция процессов:** встроенный `BackgroundService` автоматически генерирует заказы от лица виртуальных покупателей для демонстрации работы системы в реальном времени.
+* **🤖 Автозакупка (Auto-Reorder):** система отслеживает критический остаток на складе и автоматически формирует `PurchaseOrder` поставщику, а также имитирует автоприемку товаров по наступившей дате.
+* **💰 Лояльность и скидки:** конструктор процентных и фиксированных скидок, привязка правил (по категории, сумме чека, роли клиента) и валидация промокодов/купонов.
+* **📊 Аналитический Дашборд:** вывод ключевых метрик (Total Stock Value, Revenue), графиков популярных товаров и списка позиций с низким остатком.
+* **🔒 Ролевая безопасность:** JWT-аутентификация (Identity) с разграничением прав доступа (`Admin`, `Manager`, `User`, `Developer`).
+
+---
+
+## 🏗️ Архитектура и Стек технологий
+
+Приложение спроектировано по принципам **DDD (Domain-Driven Design)** и **Clean Architecture** (зависимости направлены строго внутрь ядра):
+
+* **Domain (Ядро):** Сущности (`Product`, `Order`, `Supplier`, `Discount`), Value Objects (`Money`, `PhoneNumber`) и доменные события (`StockChangedEvent`). Защита инвариантов через private setters.
+* **Application (Прикладной слой):** Использование **CQRS (MediatR)** для разделения команд и запросов. Пайплайны автоматической валидации через **FluentValidation** и маппинг DTO. Организация кода по Feature Folders.
+* **Infrastructure (Инфраструктура):** **PostgreSQL** под управлением **EF Core** (конфигурация таблиц через Fluent API / `OwnsOne` для Value Objects). Сервисы авторизации и фоновый воркер симуляции.
+* **API (Представление):** 11 "тонких" REST-контроллеров, CORS-политики и документирование через Swagger UI (с поддержкой авторизации Bearer).
+
+### Технологический стек:
+* **Бэкенд:** .NET 8, MediatR, FluentValidation, AutoMapper, ASP.NET Core Identity.
+* **Фронтенд:** React 19, TypeScript, Vite, TanStack React Query, Axios, TailwindCSS, Sonner.
+* **DevOps:** Docker, Docker Compose, Traefik (авто-выпуск SSL Let's Encrypt для продакшена).
+
+---
+
+## 📦 Быстрый запуск через Docker
+
+Архитектура контейнеризирована с помощью многостадийных (multi-stage) Dockerfile, что минимизирует размер образов.
+
+1. Клонируйте репозиторий:
+   ```bash
+   git clone https://github.com/SummonFly/Laboratory-color-business.git
+   cd laboratory-color-business
+   ```
+2. Создайте файл `.env` в корневой папке на основе примера `.env.example`.
+3. Запустите весь стек одной командой:
+   ```bash
+   docker compose up -d --build
+   ```
+
+### Доступные адреса (Локально):
+* **Frontend-приложение (React):** `http://localhost:3000`
+* **Backend API / Swagger UI:** `http://localhost:5000/swagger` (контейнер мапится с порта 8080 на 5000)
+* **База данных (PostgreSQL):** `localhost:5432`
+
+*При старте приложения автоматически применяются миграции бД и запускается сид базовых данных (`SeedData` — роли, админ, базовые категории).*

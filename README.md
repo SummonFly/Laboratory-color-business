@@ -1,9 +1,9 @@
 # 🎨 Laboratory Color Business Solution
 
-[![NET 8](https://shields.io)](https://microsoft.com)
-[![React 19](https://shields.io)](https://react.dev)
-[![PostgreSQL](https://shields.io)](https://postgresql.org)
-[![Docker](https://shields.io)](https://docker.com)
+[![NET 8](https://img.shields.io/badge/-.NET%208.0-blueviolet?logo=dotnet)](https://microsoft.com)
+[![React 19](https://img.shields.io/badge/-React_19-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?logo=postgresql&logoColor=white)](https://postgresql.org)
+[![Docker](https://img.shields.io/badge/-Docker-2496ED?style=flat-square&logo=Docker&logoColor=white)](https://docker.com)
 
 **Laboratory Color** — веб-приложение для автоматизации внутренних бизнес-процессов розничной торговли автоэмалями и автокрасками (управление складом, поставщиками, заказами и аналитика). Особенность проекта — встроенный модуль фоновой симуляции торговых процессов.
 
@@ -25,9 +25,11 @@
 * **Автономное снабжение:** при падении остатков ниже лимита бэкенд сам отправляет заказ поставщику, а по наступившей дате автоматически проводит приемку товара на склад.
 * **Гибкая конфигурация:** интервалы проверок, пороговые значения (Low Stock Alert) и вероятность совершения покупки настраиваются на лету через интерфейс.
 
-| Мониторинг логов в реальном времени | Окно конфигурации параметров алгоритма |
-| :---: | :---: |
-| ![Панель фоновой симуляции](https://github.com/user-attachments/assets/f29f4001-9804-4e4a-9593-536ea5e2f8e3) | ![Конфигурация симуляции](https://github.com/user-attachments/assets/8476fc60-9f14-427d-afea-1e899a10ddfb) |
+#### Панель фоновой симуляции
+![Панель фоновой симуляции](https://github.com/user-attachments/assets/f29f4001-9804-4e4a-9593-536ea5e2f8e3)
+
+#### Конфигурация симуляции
+![Конфигурация симуляции](https://github.com/user-attachments/assets/8476fc60-9f14-427d-afea-1e899a10ddfb)
 
 ---
 
@@ -36,9 +38,11 @@
 * **Заказы поставщикам (Purchase Orders):** процесс создания заявок, калькуляция оптовой стоимости, фиксация ожидаемых дат поставок и поэтапный контроль статусов (Pending → Shipped → Received).
 * **Движения по складу (Stock Movements):** сквозной аудит склада. Каждое изменение остатка строго логируется с указанием типа движения (приход при закупке, расход при продаже, ручное списание) и документа-основания.
 
-| Оформление заказов поставщикам | История движений по складу |
-| :---: | :---: |
-| ![Заказы поставщикам](https://github.com/user-attachments/assets/5d868709-838d-440a-9877-7a12a12d400c) | ![Движения по складу](https://github.com/user-attachments/assets/d29e46f3-505b-4925-978e-757357eac1bb) |
+#### Заказы поставщикам
+![Заказы поставщикам](https://github.com/user-attachments/assets/5d868709-838d-440a-9877-7a12a12d400c)
+
+#### Движения по складу
+![Движения по складу](https://github.com/user-attachments/assets/d29e46f3-505b-4925-978e-757357eac1bb)
 
 ---
 

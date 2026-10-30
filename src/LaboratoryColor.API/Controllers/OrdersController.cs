@@ -1,5 +1,6 @@
 ﻿using LaboratoryColor.Application.Features.Orders.Commands;
 using LaboratoryColor.Application.Features.Orders.Queries;
+using LaboratoryColor.Application.Features.PurchaseOrders.Commands;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -27,6 +28,20 @@ namespace LaboratoryColor.API.Controllers
         {
             var id = await _mediator.Send(command);
             return CreatedAtAction(nameof(GetOrder), new { id }, new { id });
+        }
+
+        /// <summary>
+        /// Update a status of order
+        /// </summary>
+        [HttpPatch("{id}/status")]
+        [Authorize(Roles = "Admin,Manager")]
+        public async Task<IActionResult> UpdateStatus(int id, UpdateOrderStatusCommand command)
+        {
+            if (id != command.OrderId)
+                return BadRequest("ID mismatch");
+
+            await _mediator.Send(command);
+            return NoContent();
         }
 
         /// <summary>

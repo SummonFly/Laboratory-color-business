@@ -1,6 +1,6 @@
 import { apiClient } from './client';
 
-export type OrderStatus = 'New' | 'Pending' | 'Processing' | 'Shipped' | 'Delivered' | 'Cancelled';
+export type OrderStatus = 'New' | 'Processing' | 'Completed' | 'Cancelled';
 
 export interface OrderItemDto {
     id: number;
@@ -31,7 +31,7 @@ export interface GetOrdersParams {
 
 export interface UpdateOrderStatusRequest {
     orderId: number;
-    status: OrderStatus;
+    status: number;
 }
 
 export const ordersAPI = {
@@ -46,6 +46,9 @@ export const ordersAPI = {
     },
 
     updateStatus: async (data: UpdateOrderStatusRequest): Promise<void> => {
-        await apiClient.patch(`/Orders/${data.orderId}/status`, { status: data.status });
+        await apiClient.patch(`/Orders/${data.orderId}/status`, {
+            orderId: data.orderId,
+            status: data.status,
+        });
     },
 };

@@ -7,14 +7,12 @@ import { format } from 'date-fns';
 
 const statusColors: Record<OrderStatus, string> = {
     'New': 'bg-gray-100 text-gray-800',
-    'Pending': 'bg-yellow-100 text-yellow-800',
     'Processing': 'bg-blue-100 text-blue-800',
-    'Shipped': 'bg-purple-100 text-purple-800',
-    'Delivered': 'bg-green-100 text-green-800',
+    'Completed': 'bg-green-100 text-green-800',
     'Cancelled': 'bg-red-100 text-red-800',
 };
 
-const statusOrder: OrderStatus[] = ['New', 'Pending', 'Processing', 'Shipped', 'Delivered'];
+const statusOrder: OrderStatus[] = ['New', 'Processing', 'Completed', 'Cancelled'];
 
 export const OrdersPage = () => {
     const [statusFilter, setStatusFilter] = useState('');
@@ -36,9 +34,20 @@ export const OrdersPage = () => {
         setIsModalOpen(true);
     };
 
-    const handleUpdateStatus = (orderId: number, newStatus: OrderStatus) => {
+
+    const handleUpdateStatus = (orderId: number, newStatus: string) => {
+        const statusToNumber: Record<string, number> = {
+            'New': 1,
+            'Processing': 2,
+            'Completed': 3,
+            'Cancelled': 4,
+        };
+
         if (window.confirm(`Change order status to ${newStatus}?`)) {
-            updateStatus.mutate({ orderId, status: newStatus });
+            updateStatus.mutate({
+                orderId: orderId,
+                status: statusToNumber[newStatus]
+            });
         }
     };
 
